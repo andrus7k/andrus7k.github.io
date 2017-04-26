@@ -1,4 +1,10 @@
 ---
 - hosts: localhost
   tasks:
-  - shell: echo "hello world"
+
+  - apt_repository: repo='deb http://debian.sur5r.net/i3/ {{ansible_distribution_release}} universe'
+  - apt: pkg=sur5r-keyring allow_unauthenticated=yes state=latest update_cache=yes
+  - apt: pkg={{ item }} update_cache=yes state=latest
+    with_items:
+    - i3
+    - xfonts-terminus
