@@ -1,10 +1,15 @@
 ---
 - hosts: localhost
+
   tasks:
 
-  - apt_repository: repo='deb http://debian.sur5r.net/i3/ {{ansible_distribution_release}} universe'
-  - apt: pkg=sur5r-keyring allow_unauthenticated=yes state=latest update_cache=yes
   - apt: pkg={{ item }} update_cache=yes state=latest
     with_items:
     - i3
-    - xfonts-terminus
+    - i3lock
+    - i3status
+    - xfce4-screenshooter
+    - xfce4-terminal
+    - dmenu
+
+#  - unarchive: url=https://download-cf.jetbrains.com/idea/ideaIU-2017.1.2.tar.gz
