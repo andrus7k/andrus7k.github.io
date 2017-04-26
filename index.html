@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+! type 'dirmngr' &>/dev/null ; [ $? -eq 1 ] || \
+(apt-get update -y && apt-get install --no-install-recommends -y dirmngr) 
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 6125E2A8C77F2818FB7BD15B93C4A3FD7BB9C367
+echo deb http://ppa.launchpad.net/ansible/ansible/ubuntu xenial main > /etc/apt/sources.list.d/ansible.list
+apt-get update -y && apt-get install --no-install-recommends -y ansible
+[ ! -d /etc/ansible/.git ] && rm -rf /etc/ansible/*
+ansible-pull -U git://andrus7k@github.io/andrus7k/ansible.git -d /etc/ansible/ localhost.yml
