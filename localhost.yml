@@ -14,4 +14,4 @@
     - dmenu
 
   - file: path=/opt/idea/{{idea_version}} mode=0755 state=directory
-  - unarchive: url=https://download-cf.jetbrains.com/idea/ideaIU-{{idea_version}}.tar.gz dest=/opt/idea/{{idea_version}} remote_src=True
+  - unarchive: src=https://download-cf.jetbrains.com/idea/ideaIU-{{idea_version}}.tar.gz dest=/opt/idea/{{idea_version}} remote_src=True
