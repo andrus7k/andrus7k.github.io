@@ -5,4 +5,4 @@ apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 6125E2A8C77F2818FB7BD15
 echo deb http://ppa.launchpad.net/ansible/ansible/ubuntu xenial main > /etc/apt/sources.list.d/ansible.list
 apt-get update -y && apt-get install --no-install-recommends -y ansible
 [ ! -d /etc/ansible/.git ] && rm -rf /etc/ansible/*
-ansible-pull -U git://github.com/andrus7k/andrus7k.github.io.git -C ansible -d /etc/ansible/ localhost.yml
+ansible-pull -U git://github.com/andrus7k/andrus7k.github.io.git -C ansible -d /etc/ansible/ -v localhost.yml
