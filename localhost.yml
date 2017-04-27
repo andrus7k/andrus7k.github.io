@@ -1,6 +1,7 @@
 ---
 - hosts: localhost
-
+  vars:
+    idea_version: 2017.1.2
   tasks:
 
   - apt: pkg={{ item }} update_cache=yes state=latest
@@ -12,4 +13,5 @@
     - xfce4-terminal
     - dmenu
 
-#  - unarchive: url=https://download-cf.jetbrains.com/idea/ideaIU-2017.1.2.tar.gz
+  - file: path=/opt/idea/{{idea_version}} mode=0755 state=directory
+  - unarchive: url=https://download-cf.jetbrains.com/idea/ideaIU-{{idea_version}}.tar.gz dest=/opt/idea/{{idea_version}} remote_src=True
