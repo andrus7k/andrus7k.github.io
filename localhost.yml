@@ -14,5 +14,5 @@
     - dmenu
 
   - file: path=/opt/idea/{{idea_version}}/ mode=0755 state=directory
-  - unarchive: src=https://download-cf.jetbrains.com/idea/ideaIU-{{idea_version}}.tar.gz dest=/opt/idea/{{idea_version}}/ remote_src=True extra_opts=["--strip-components=1"] creates=/opt/idea/{{idea_version}}/bin
+  - unarchive: src=https://download-cf.jetbrains.com/idea/ideaIU-{{idea_version}}.tar.gz dest=/opt/idea/{{idea_version}}/ remote_src=True extra_opts="--strip-components=1" creates=/opt/idea/{{idea_version}}/bin
   - file: src=/opt/idea/{{idea_version}}/bin/idea.sh dest=/usr/local/bin/idea state=link
