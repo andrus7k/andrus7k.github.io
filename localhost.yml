@@ -3,19 +3,19 @@
   vars:
     idea_version: 2017.1.2
     packages:
-    -abiword,abiword-plugin-grammar,gnumeric,gnumeric-plugins-extra
-    -awscli,python-boto,python-wheel
-    -openssh-client,sshpass
-    -ca-certificates,openssl,openssl-blacklist,openssl-blacklist-extra
-    -openvpn,openvpn-blacklist,openvpn-systemd-resolved
-    -smplayer,firefox-esr,chromium
-    -git,git-man,pwgen,jq,htop,iw,wireless-tools,wpasupplicant,locales,lsof,mc,mysql-client,nano,nmap
-    -tar,unzip,gzip,xz-utils,zip
-    -i3,i3lock,i3status,i3-wm,dunst,colord
-    -gksu,gparted,wireshark,wireshark-qt,keepassx
-    -paman,pavucontrol,pavumeter,pulseaudio,pulseaudio-utils
-    -powertop,upower,system-config-printer
-    -xauth,xfce4-screenshooter,xfce4-terminal,xorg,xserver-common,xserver-xorg,xterm
+    - abiword,abiword-plugin-grammar,gnumeric,gnumeric-plugins-extra
+    - awscli,python-boto,python-wheel
+    - openssh-client,sshpass
+    - ca-certificates,openssl,openssl-blacklist,openssl-blacklist-extra
+    - openvpn,openvpn-blacklist,openvpn-systemd-resolved
+    - smplayer,firefox-esr,chromium
+    - git,git-man,pwgen,jq,htop,iw,wireless-tools,wpasupplicant,locales,lsof,mc,mysql-client,nano,nmap
+    - tar,unzip,gzip,xz-utils,zip
+    - i3,i3lock,i3status,i3-wm,dunst,colord
+    - gksu,gparted,wireshark,wireshark-qt,keepassx
+    - paman,pavucontrol,pavumeter,pulseaudio,pulseaudio-utils
+    - powertop,upower,system-config-printer
+    - xauth,xfce4-screenshooter,xfce4-terminal,xorg,xserver-common,xserver-xorg,xterm
 
   tasks:
 
