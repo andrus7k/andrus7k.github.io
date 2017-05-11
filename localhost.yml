@@ -37,8 +37,10 @@
   - apt_key: id={{item.id|default(None)}} url={{item.url|default(None)}} state=present
     with_items: "{{apt_keys}}"
 
-  - apt_repository: repo={{item}} state=present
+  - apt_repository: repo={{item}} state=present filename=00-main
     with_items: "{{apt_repos}}"
+
+  - file: /etc/apt/sources.list state=absent
 
   - apt: update_cache=yes upgrade=dist
 
