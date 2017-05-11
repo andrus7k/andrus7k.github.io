@@ -40,7 +40,7 @@
   - apt_repository: repo={{item}} state=present filename=00-main
     with_items: "{{apt_repos}}"
 
-  - file: /etc/apt/sources.list state=absent
+  - copy: content="" dest=/etc/apt/sources.list
 
   - apt: update_cache=yes upgrade=dist
 
