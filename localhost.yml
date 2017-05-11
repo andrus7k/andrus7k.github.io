@@ -1,26 +1,49 @@
 ---
 - hosts: localhost
   vars:
-    idea_version: 2017.1.2
-    packages:
-    - [abiword,abiword-plugin-grammar,gnumeric,gnumeric-plugins-extra]
+    deb_ubu_mapping:
+      stretch: xenial
+      jessie: trusty
+      wheezy: precise
+
+    apt_keys:
+    - id: 592073D4
+      url: https://installer.id.ee/media/install-scripts/ria-public.key
+    - id: C6C83D68
+      url: https://installer.id.ee/media/install-scripts/C6C83D68.pub
+
+    apt_repos:
+    - deb http://ftp.fi.debian.org/debian/ {{ansible_distribution_release}} main non-free contrib
+    - deb http://ftp.fi.debian.org/debian/ {{ansible_distribution_release}}-updates main contrib non-free
+    - deb http://security.debian.org/ {{ansible_distribution_release}}/updates main contrib non-free
+    - deb https://installer.id.ee/media/ubuntu/ {{deb_ubu_mapping[ansible_distribution_release]}} main
+#    - deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main
+#    - deb https://apt.dockerproject.org/repo debian-stretch main
+#    - deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
+#    - deb http://download.virtualbox.org/virtualbox/debian stretch contrib
+
+    apt_packages:
     - [awscli,python-boto,python-wheel]
-    - [openssh-client,sshpass]
-    - [ca-certificates,openssl,openssl-blacklist,openssl-blacklist-extra]
-    - [openvpn,openvpn-blacklist,openvpn-systemd-resolved]
-    - [smplayer,firefox-esr,chromium]
-    - [git,git-man,pwgen,jq,htop,iw,wireless-tools,wpasupplicant,locales,lsof,mc,mariadb-client,nano,nmap]
+    - [ca-certificates,openssl,openssl-blacklist,openssl-blacklist-extra,openssh-client,openvpn,openvpn-blacklist,openvpn-systemd-resolved,sshpass]
+    - [git,git-man,pwgen,jq,htop,iw,wireless-tools,wpasupplicant,locales,lsof,mc,mariadb-client,nano,nmap,powertop,upower]
     - [tar,unzip,gzip,xz-utils,zip]
-    - [i3,i3lock,i3status,i3-wm,dunst,colord]
-    - [gksu,gparted,wireshark,wireshark-qt,keepassx]
-    - [paman,pavucontrol,pavumeter,pulseaudio,pulseaudio-utils]
-    - [powertop,upower,system-config-printer]
-    - [xauth,xfce4-screenshooter,xfce4-terminal,xorg,xserver-common,xserver-xorg,xterm]
+    - [xauth,xfce4-screenshooter,xfce4-terminal,xorg,xserver-common,xserver-xorg,xterm,i3,i3lock,i3status,i3-wm,dunst,colord]
+    - [abiword,abiword-plugin-grammar,gnumeric,gnumeric-plugins-extra,smplayer,firefox-esr,chromium,gksu,gparted,wireshark,wireshark-qt,keepassx]
+    - [paman,pavucontrol,pavumeter,pulseaudio,pulseaudio-utils,system-config-printer]
+    - [open-eid]
+    idea_version: 2017.1.2
 
   tasks:
+  - apt_key: id={{item.id|default(None)}} url={{item.url|default(None)}} state=present
+    with_items: "{{apt_keys}}"
 
-  - apt: pkg={{ item }} update_cache=yes state=latest
-    with_items: "{{packages}}"
+  - apt_repository: repo={{item}} state=present
+    with_items: "{{apt_repos}}"
+
+  - apt: update_cache=yes upgrade=dist
+
+  - apt: pkg={{ item }} autoremove=yes install_recommends=no update_cache=yes state=latest
+    with_items: "{{apt_packages}}"
 
   - file: path=/opt/idea/{{idea_version}}/ mode=0755 state=directory
   - unarchive: src=https://download-cf.jetbrains.com/idea/ideaIU-{{idea_version}}.tar.gz dest=/opt/idea/{{idea_version}}/ remote_src=True extra_opts="--strip-components=1" creates=/opt/idea/{{idea_version}}/bin
