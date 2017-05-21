@@ -17,6 +17,8 @@
     - deb http://deb.debian.org/debian/ {{ansible_distribution_release}}-updates main contrib non-free
     - deb http://security.debian.org/ {{ansible_distribution_release}}/updates main contrib non-free
     - deb https://installer.id.ee/media/ubuntu/ {{deb_ubu_mapping[ansible_distribution_release]}} main
+    - deb http://security.debian.org/ jessie/updates main contrib non-free
+    - deb [trusted=yes] https://people.debian.org/~mpitt/tmp/systemd-master-20170225/ /
 #    - deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main
 #    - deb https://apt.dockerproject.org/repo debian-stretch main
 #    - deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
@@ -25,9 +27,9 @@
     apt_packages:
     - [awscli,python-boto,python-wheel]
     - [ca-certificates,openssl,openssh-client,openvpn,openvpn-systemd-resolved,sshpass]
-    - [git,git-man,pwgen,jq,htop,iw,wireless-tools,wpasupplicant,locales,lsof,mc,mariadb-client,nano,nmap,powertop,upower]
+    - [mercurial,git,git-man,pwgen,jq,htop,iw,wireless-tools,wpasupplicant,locales,lsof,mc,mariadb-client,nano,nmap,powertop,upower]
     - [tar,unzip,gzip,xz-utils,zip]
-    - [xauth,xfce4-screenshooter,xfce4-terminal,xorg,xserver-common,xserver-xorg,xterm,i3,i3lock,i3status,i3-wm,dunst,colord]
+    - [xauth,xfce4-screenshooter,xfce4-terminal,xfce4-panel,xfce4-battery-plugin,xfce4-pulseaudio-plugin,xorg,xserver-common,xserver-xorg,xterm,i3,i3lock,i3status,i3-wm,dunst,colord]
     - [abiword,abiword-plugin-grammar,gnumeric,gnumeric-plugins-extra,smplayer,firefox-esr,chromium,gksu,gparted,wireshark,wireshark-qt,keepassx]
     - [paman,pavucontrol,pavumeter,pulseaudio,pulseaudio-utils,system-config-printer]
     - [open-eid]
