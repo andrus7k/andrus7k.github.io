@@ -34,6 +34,7 @@
     - [paman,pavucontrol,pavumeter,pulseaudio,pulseaudio-utils,system-config-printer]
     - [open-eid]
     idea_version: 2017.1.2
+    terraform_version: 0.9.5
 
   tasks:
   - apt_key: id={{item.id|default(None)}} url={{item.url|default(None)}} state=present
@@ -52,3 +53,7 @@
   - file: path=/opt/idea/{{idea_version}}/ mode=0755 state=directory
   - unarchive: src=https://download-cf.jetbrains.com/idea/ideaIU-{{idea_version}}.tar.gz dest=/opt/idea/{{idea_version}}/ remote_src=True extra_opts="--strip-components=1" creates=/opt/idea/{{idea_version}}/bin
   - file: src=/opt/idea/{{idea_version}}/bin/idea.sh dest=/usr/local/bin/idea state=link
+
+  - file: path=/opt/terraform/{{terraform_version}}/ mode=0755 state=directory
+  - unarchive: src=https://releases.hashicorp.com/terraform/{{terraform_version}}/terraform_{{terraform_version}}_linux_amd64.zip dest=/opt/terraform/{{terraform_version}}/ remote_src=True creates=/opt/terraform/{{terraform_version}}/terraform
+  - file: src=/opt/terraform/{{terraform_version}}/terraform dest=/usr/local/bin/terraform state=link
