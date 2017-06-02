@@ -24,7 +24,6 @@
     - deb http://ppa.launchpad.net/webupd8team/java/ubuntu {{deb_ubu_mapping[ansible_distribution_release]}} main
 
 #    - deb [trusted=yes] https://people.debian.org/~mpitt/tmp/systemd-master-20170225/ /
-#    - deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main
 #    - deb https://apt.dockerproject.org/repo debian-stretch main
 #    - deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
 #    - deb http://download.virtualbox.org/virtualbox/debian stretch contrib
@@ -39,8 +38,10 @@
     - [paman,pavucontrol,pavumeter,pulseaudio,pulseaudio-utils]
     - [open-eid,gcc]
     - [oracle-java8-installer,oracle-java8-set-default]
+
     idea_version: 2017.1.2
     terraform_version: 0.9.6
+    maven_version: 3.5.0
 
   tasks:
   - apt_key: id={{item.id|default(None)}} url={{item.url|default(None)}} state=present
@@ -67,3 +68,9 @@
   - file: path=/opt/terraform/{{terraform_version}}/ mode=0755 state=directory
   - unarchive: src=https://releases.hashicorp.com/terraform/{{terraform_version}}/terraform_{{terraform_version}}_linux_amd64.zip dest=/opt/terraform/{{terraform_version}}/ remote_src=True creates=/opt/terraform/{{terraform_version}}/terraform
   - file: src=/opt/terraform/{{terraform_version}}/terraform dest=/usr/local/bin/terraform state=link
+
+  - file: path=/opt/maven/{{maven_version}}/ mode=0755 state=directory
+  - unarchive: src=https://www-eu.apache.org/dist/maven/maven-3/{{maven_version}}/binaries/apache-maven-{{maven_version}}-bin.tar.gz dest=/opt/maven/{{maven_version}}/ remote_src=True extra_opts="--strip-components=1" remote_src=True creates=/opt/maven/{{maven_version}}/bin/mvn
+  - file: src=/opt/maven/{{maven_version}}/bin/mvn dest=/usr/local/bin/mvn state=link
+
+
