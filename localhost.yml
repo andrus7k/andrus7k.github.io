@@ -6,11 +6,14 @@
       jessie: trusty
       wheezy: precise
 
-    apt_keys:
+    apt_keys_url:
     - id: 592073D4
       url: https://installer.id.ee/media/install-scripts/ria-public.key
     - id: C6C83D68
       url: https://installer.id.ee/media/install-scripts/C6C83D68.pub
+    apt_keys_srv:
+    - id: EEA14886
+      keyserver: keyserver.ubuntu.com
 
     apt_repos:
     - deb http://deb.debian.org/debian/ {{ansible_distribution_release}} main non-free contrib
@@ -18,6 +21,7 @@
     - deb http://security.debian.org/ {{ansible_distribution_release}}/updates main contrib non-free
     - deb https://installer.id.ee/media/ubuntu/ {{deb_ubu_mapping[ansible_distribution_release]}} main
     - deb http://security.debian.org/ jessie/updates main contrib non-free
+    - deb http://ppa.launchpad.net/webupd8team/java/ubuntu {{deb_ubu_mapping[ansible_distribution_release]}} main
 
 #    - deb [trusted=yes] https://people.debian.org/~mpitt/tmp/systemd-master-20170225/ /
 #    - deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main
@@ -33,13 +37,16 @@
     - [xauth,xfce4-screenshooter,xfce4-settings,xfce4-xkb-plugin,xfce4-terminal,xfce4-panel,xfce4-pulseaudio-plugin,xorg,xserver-common,xserver-xorg,xterm,i3,i3lock,i3status,i3-wm,dunst,colord]
     - [abiword,abiword-plugin-grammar,gnumeric,gnumeric-plugins-extra,smplayer,chromium,gparted,wireshark,wireshark-qt,keepassx]
     - [paman,pavucontrol,pavumeter,pulseaudio,pulseaudio-utils]
-    - [open-eid]
+    - [open-eid,gcc]
+    - [oracle-java8-installer,oracle-java8-set-default]
     idea_version: 2017.1.2
     terraform_version: 0.9.6
 
   tasks:
   - apt_key: id={{item.id|default(None)}} url={{item.url|default(None)}} state=present
-    with_items: "{{apt_keys}}"
+    with_items: "{{apt_keys_url}}"
+  - apt_key: id={{item.id|default(None)}} keyserver={{item.keyserver|default(None)}} state=present
+    with_items: "{{apt_keys_srv}}"
 
   - apt_repository: repo={{item}} state=present
     with_items: "{{apt_repos}}"
@@ -47,6 +54,8 @@
   - copy: content="" dest=/etc/apt/sources.list
 
   - apt: update_cache=yes upgrade=dist
+
+  - debconf: name=oracle-java8-installer question='shared/accepted-oracle-license-v1-1' value='true' vtype='select'
 
   - apt: pkg={{ item }} autoremove=yes install_recommends=no update_cache=yes state=latest
     with_items: "{{apt_packages}}"
