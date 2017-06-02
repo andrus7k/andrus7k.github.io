@@ -25,7 +25,6 @@
 
 #    - deb [trusted=yes] https://people.debian.org/~mpitt/tmp/systemd-master-20170225/ /
 #    - deb https://apt.dockerproject.org/repo debian-stretch main
-#    - deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
 #    - deb http://download.virtualbox.org/virtualbox/debian stretch contrib
 
     apt_packages:
@@ -49,7 +48,6 @@
     with_items: "{{apt_keys_url}}"
   - apt_key: id={{item.id|default(None)}} keyserver={{item.keyserver|default(None)}} state=present
     with_items: "{{apt_keys_srv}}"
-
   - apt_repository: repo={{item}} state=present
     with_items: "{{apt_repos}}"
 
