@@ -5,6 +5,9 @@
       stretch: xenial
       jessie: trusty
       wheezy: precise
+      xenial: xenial
+      trusty: trusty
+      precise: precise
 
     apt_keys_url:
     - id: 592073D4
