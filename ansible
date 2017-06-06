@@ -3,6 +3,6 @@
 (apt-get update -y && apt-get install --no-install-recommends -y dirmngr)
 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 6125E2A8C77F2818FB7BD15B93C4A3FD7BB9C367
 echo deb http://ppa.launchpad.net/ansible/ansible/ubuntu xenial main > /etc/apt/sources.list.d/ansible.list
-apt-get update -y && apt-get install --no-install-recommends -y ansible apt-transport-https
+apt-get update -y && apt-get install --no-install-recommends -y ansible apt-transport-https git-core
 [ ! -d /etc/ansible/.git ] && rm -rf /etc/ansible/*
 ansible-pull -U git://github.com/andrus7k/andrus7k.github.io.git -C ansible -d /etc/ansible/ --clean -v localhost.yml
