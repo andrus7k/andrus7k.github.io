@@ -11,6 +11,8 @@
       url: https://installer.id.ee/media/install-scripts/ria-public.key
     - id: C6C83D68
       url: https://installer.id.ee/media/install-scripts/C6C83D68.pub
+    - id: 0EBFCD88
+      url: https://download.docker.com/linux/debian/gpg
     apt_keys_srv:
     - id: EEA14886
       keyserver: keyserver.ubuntu.com
@@ -22,6 +24,7 @@
     - deb https://installer.id.ee/media/ubuntu/ {{deb_ubu_mapping[ansible_distribution_release]}} main
     - deb http://security.debian.org/ jessie/updates main contrib non-free
     - deb http://ppa.launchpad.net/webupd8team/java/ubuntu {{deb_ubu_mapping[ansible_distribution_release]}} main
+    - deb [arch=amd64] https://download.docker.com/linux/debian {{ansible_distribution_release}} stable
 
 #    - deb [trusted=yes] https://people.debian.org/~mpitt/tmp/systemd-master-20170225/ /
 #    - deb https://apt.dockerproject.org/repo debian-stretch main
@@ -37,6 +40,7 @@
     - [paman,pavucontrol,pavumeter,pulseaudio,pulseaudio-utils]
     - [open-eid,gcc]
     - [oracle-java8-installer,oracle-java8-set-default]
+    - [docker-ce]
 
     idea_version: 2017.1.2
     terraform_version: 0.9.6
