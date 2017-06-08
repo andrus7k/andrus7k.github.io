@@ -32,8 +32,8 @@
 
     apt_packages:
     - [awscli,python-boto,python-wheel]
-    - [ca-certificates,openssl,openssh-client,openvpn,openvpn-systemd-resolved,sshpass]
-    - [mercurial,git,git-man,pwgen,jq,htop,iw,wireless-tools,wpasupplicant,locales,lsof,mc,mariadb-client,nano,nmap,powertop,upower]
+    - [ca-certificates,openssl,openssh-client,openvpn,openresolv,sshpass]
+    - [bash-completion,mercurial,git,git-man,pwgen,jq,htop,iw,wireless-tools,wpasupplicant,locales,lsof,mc,mariadb-client,nano,nmap,powertop,upower]
     - [tar,unzip,gzip,xz-utils,zip]
     - [xauth,xfce4-screenshooter,xfce4-settings,xfce4-xkb-plugin,xfce4-terminal,xfce4-panel,xfce4-pulseaudio-plugin,xorg,xserver-common,xserver-xorg,xterm,i3,i3lock,i3status,i3-wm,dunst,colord]
     - [abiword,abiword-plugin-grammar,gnumeric,gnumeric-plugins-extra,smplayer,chromium,gparted,wireshark,wireshark-qt,keepassx]
