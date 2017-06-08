@@ -27,7 +27,6 @@
     - deb [arch=amd64] https://download.docker.com/linux/debian {{ansible_distribution_release}} stable
 
 #    - deb [trusted=yes] https://people.debian.org/~mpitt/tmp/systemd-master-20170225/ /
-#    - deb https://apt.dockerproject.org/repo debian-stretch main
 #    - deb http://download.virtualbox.org/virtualbox/debian stretch contrib
 
     apt_packages:
@@ -40,10 +39,11 @@
     - [paman,pavucontrol,pavumeter,pulseaudio,pulseaudio-utils]
     - [open-eid,gcc]
     - [oracle-java8-installer,oracle-java8-set-default]
-    - [docker-ce]
+    - [qemu-kvm,qemu-system-x86,qemu-utils,docker-ce]
 
     idea_version: 2017.1.2
     terraform_version: 0.9.6
+    packer_version: 1.0.0
     maven_versions: [2,3]
     maven_default: 3
 
@@ -76,6 +76,10 @@
   - file: path=/opt/terraform/{{terraform_version}}/ mode=0755 state=directory
   - unarchive: src=https://releases.hashicorp.com/terraform/{{terraform_version}}/terraform_{{terraform_version}}_linux_amd64.zip dest=/opt/terraform/{{terraform_version}}/ remote_src=True creates=/opt/terraform/{{terraform_version}}/terraform
   - file: src=/opt/terraform/{{terraform_version}}/terraform dest=/usr/local/bin/terraform state=link
+
+  - file: path=/opt/packer/{{packer_version}}/ mode=0755 state=directory
+  - unarchive: src=https://releases.hashicorp.com/packer/{{packer_version}}/packer_{{packer_version}}_linux_amd64.zip dest=/opt/packer/{{packer_version}}/ remote_src=True creates=/opt/packer/{{packer_version}}/packer
+  - file: src=/opt/packer/{{packer_version}}/packer dest=/usr/local/bin/packer state=link
 
 
 
