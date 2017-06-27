@@ -32,8 +32,8 @@
     apt_packages:
     - [awscli,python-boto,python-wheel]
     - [ca-certificates,openssl,openssh-client,openvpn,openresolv,sshpass]
-    - [bash-completion,mercurial,git,git-man,pwgen,jq,htop,iw,wireless-tools,wpasupplicant,locales,lsof,mc,mariadb-client,nano,nmap,powertop,upower]
-    - [tar,unzip,gzip,xz-utils,zip]
+    - [bash-completion,mercurial,git-core,git-man,pwgen,jq,htop,iw,wireless-tools,wpasupplicant,locales,lsof,mc,mariadb-client,nano,nmap,powertop,upower]
+    - [tar,unzip,gzip,xz-utils,zip,bzip2]
     - [xauth,xfce4-screenshooter,xfce4-settings,xfce4-xkb-plugin,xfce4-terminal,xfce4-panel,xfce4-pulseaudio-plugin,xorg,xserver-common,xserver-xorg,xterm,i3,i3lock,i3status,i3-wm,dunst,colord]
     - [abiword,abiword-plugin-grammar,gnumeric,gnumeric-plugins-extra,smplayer,chromium,gparted,wireshark,wireshark-qt,keepassx]
     - [paman,pavucontrol,pavumeter,pulseaudio,pulseaudio-utils]
@@ -41,9 +41,10 @@
     - [oracle-java8-installer,oracle-java8-set-default]
     - [qemu-kvm,qemu-system-x86,qemu-utils,docker-ce]
 
+    consul_version: 0.8.4
     idea_version: 2017.1.2
-    terraform_version: 0.9.6
-    packer_version: 1.0.0
+    terraform_version: 0.9.8
+    packer_version: 1.0.2
     maven_versions: [2,3]
     maven_default: 3
 
@@ -80,6 +81,10 @@
   - file: path=/opt/packer/{{packer_version}}/ mode=0755 state=directory
   - unarchive: src=https://releases.hashicorp.com/packer/{{packer_version}}/packer_{{packer_version}}_linux_amd64.zip dest=/opt/packer/{{packer_version}}/ remote_src=True creates=/opt/packer/{{packer_version}}/packer
   - file: src=/opt/packer/{{packer_version}}/packer dest=/usr/local/bin/packer state=link
+
+  - file: path=/opt/consul/{{consul_version}}/ mode=0755 state=directory
+  - unarchive: src=https://releases.hashicorp.com/consul/{{consul_version}}/consul_{{consul_version}}_linux_amd64.zip dest=/opt/consul/{{consul_version}}/ remote_src=True creates=/opt/consul/{{consul_version}}/consul
+  - file: src=/opt/consul/{{consul_version}}/consul dest=/usr/local/bin/consul state=link
 
 
 
