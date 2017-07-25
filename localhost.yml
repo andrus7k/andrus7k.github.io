@@ -41,10 +41,11 @@
     - [oracle-java8-installer,oracle-java8-set-default]
     - [qemu-kvm,qemu-system-x86,qemu-utils,docker-ce]
 
-    consul_version: 0.8.4
+    consul_version: 0.9.0
+    consul_alerts_version: 0.5.0
     idea_version: 2017.1.2
-    terraform_version: 0.9.8
-    packer_version: 1.0.2
+    terraform_version: 0.9.11
+    packer_version: 1.0.3
     maven_versions: [2,3]
     maven_default: 3
 
@@ -86,5 +87,8 @@
   - unarchive: src=https://releases.hashicorp.com/consul/{{consul_version}}/consul_{{consul_version}}_linux_amd64.zip dest=/opt/consul/{{consul_version}}/ remote_src=True creates=/opt/consul/{{consul_version}}/consul
   - file: src=/opt/consul/{{consul_version}}/consul dest=/usr/local/bin/consul state=link
 
+  - file: path=/opt/consul-alerts/{{consul_alerts_version}}/ mode=0755 state=directory
+  - unarchive: src=https://github.com/AcalephStorage/consul-alerts/releases/download/v{{consul_alerts_version}}/consul-alerts-{{consul_alerts_version}}-linux-amd64.tar dest=/opt/consul-alerts/{{consul_alerts_version}}/ remote_src=True creates=/opt/consul-alerts/{{consul_version}}/consul-alerts
+  - file: src=/opt/consul-alerts/{{consul_alerts_version}}/consul-alerts dest=/usr/local/bin/consul-alerts state=link
 
 
