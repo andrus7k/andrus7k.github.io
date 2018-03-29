@@ -11,20 +11,25 @@
       url: https://installer.id.ee/media/install-scripts/ria-public.key
     - id: C6C83D68
       url: https://installer.id.ee/media/install-scripts/C6C83D68.pub
-    - id: 0EBFCD88
-      url: https://download.docker.com/linux/debian/gpg
+#    - id: 0EBFCD88
+#      url: https://download.docker.com/linux/debian/gpg
+#    - id: 2582E0C5
+#      url: https://repos.influxdata.com/influxdb.key
     apt_keys_srv:
     - id: EEA14886
+      keyserver: keyserver.ubuntu.com
+    - id: ECB3980CC59E610B
       keyserver: keyserver.ubuntu.com
 
     apt_repos:
     - deb http://deb.debian.org/debian/ {{ansible_distribution_release}} main non-free contrib
     - deb http://deb.debian.org/debian/ {{ansible_distribution_release}}-updates main contrib non-free
+    - deb http://deb.debian.org/debian/ {{ansible_distribution_release}}-backports main contrib non-free
     - deb http://security.debian.org/ {{ansible_distribution_release}}/updates main contrib non-free
     - deb https://installer.id.ee/media/ubuntu/ {{deb_ubu_mapping[ansible_distribution_release]}} main
     - deb http://security.debian.org/ jessie/updates main contrib non-free
     - deb http://ppa.launchpad.net/webupd8team/java/ubuntu {{deb_ubu_mapping[ansible_distribution_release]}} main
-    - deb [arch=amd64] https://download.docker.com/linux/debian {{ansible_distribution_release}} stable
+#    - deb [arch=amd64] https://download.docker.com/linux/debian {{ansible_distribution_release}} stable
 
 #    - deb [trusted=yes] https://people.debian.org/~mpitt/tmp/systemd-master-20170225/ /
 #    - deb http://download.virtualbox.org/virtualbox/debian stretch contrib
@@ -40,12 +45,14 @@
     - [open-eid,gcc]
     - [oracle-java8-installer,oracle-java8-set-default]
     - [qemu-kvm,qemu-system-x86,qemu-utils,docker-ce]
+ #   - [collectd,influxdb]
 
-    consul_version: 0.9.0
-    consul_alerts_version: 0.5.0
-    idea_version: 2017.1.2
-    terraform_version: 0.9.11
-    packer_version: 1.0.3
+    consul_version: 1.0.2
+    nomad_version: 0.7.1
+    fabio_version: 1.5.5
+    idea_version: 2018.1
+    terraform_version: 0.10.4
+    packer_version: 1.1.3
     maven_versions: [2,3]
     maven_default: 3
 
@@ -57,7 +64,7 @@
   - apt_repository: repo={{item}} state=present
     with_items: "{{apt_repos}}"
 
-  - copy: content="" dest=/etc/apt/sources.list
+  - copy: content="\n" dest=/etc/apt/sources.list
 
   - apt: update_cache=yes upgrade=dist
 
@@ -67,17 +74,23 @@
     with_items: "{{apt_packages}}"
 
   - file: path=/opt/idea/{{idea_version}}/ mode=0755 state=directory
+    tags: [idea]
   - unarchive: src=https://download-cf.jetbrains.com/idea/ideaIU-{{idea_version}}.tar.gz dest=/opt/idea/{{idea_version}}/ remote_src=True extra_opts="--strip-components=1" creates=/opt/idea/{{idea_version}}/bin
+    tags: [idea]
   - file: src=/opt/idea/{{idea_version}}/bin/idea.sh dest=/usr/local/bin/idea state=link
+    tags: [idea]
   - file: path=/opt/idea/{{idea_version}}/plugins/maven/lib/maven{{item}}/bin/mvn mode=0755
     with_items: "{{maven_versions}}"
+    tags: [idea]
   - file: src=/opt/idea/{{idea_version}}/plugins/maven/lib/maven{{item}}/bin/mvn dest=/usr/local/bin/mvn{{item}} state=link
     with_items: "{{maven_versions}}"
+    tags: [idea]
   - file: src=/usr/local/bin/mvn{{maven_default}} dest=/usr/local/bin/mvn state=link
+    tags: [idea]
 
-  - file: path=/opt/terraform/{{terraform_version}}/ mode=0755 state=directory
-  - unarchive: src=https://releases.hashicorp.com/terraform/{{terraform_version}}/terraform_{{terraform_version}}_linux_amd64.zip dest=/opt/terraform/{{terraform_version}}/ remote_src=True creates=/opt/terraform/{{terraform_version}}/terraform
-  - file: src=/opt/terraform/{{terraform_version}}/terraform dest=/usr/local/bin/terraform state=link
+#  - file: path=/opt/terraform/{{terraform_version}}/ mode=0755 state=directory
+#  - unarchive: src=https://releases.hashicorp.com/terraform/{{terraform_version}}/terraform_{{terraform_version}}_linux_amd64.zip dest=/opt/terraform/{{terraform_version}}/ remote_src=True creates=/opt/terraform/{{terraform_version}}/terraform
+#  - file: src=/opt/terraform/{{terraform_version}}/terraform dest=/usr/local/bin/terraform state=link
 
   - file: path=/opt/packer/{{packer_version}}/ mode=0755 state=directory
   - unarchive: src=https://releases.hashicorp.com/packer/{{packer_version}}/packer_{{packer_version}}_linux_amd64.zip dest=/opt/packer/{{packer_version}}/ remote_src=True creates=/opt/packer/{{packer_version}}/packer
@@ -87,8 +100,13 @@
   - unarchive: src=https://releases.hashicorp.com/consul/{{consul_version}}/consul_{{consul_version}}_linux_amd64.zip dest=/opt/consul/{{consul_version}}/ remote_src=True creates=/opt/consul/{{consul_version}}/consul
   - file: src=/opt/consul/{{consul_version}}/consul dest=/usr/local/bin/consul state=link
 
-  - file: path=/opt/consul-alerts/{{consul_alerts_version}}/ mode=0755 state=directory
-  - unarchive: src=https://github.com/AcalephStorage/consul-alerts/releases/download/v{{consul_alerts_version}}/consul-alerts-{{consul_alerts_version}}-linux-amd64.tar dest=/opt/consul-alerts/{{consul_alerts_version}}/ remote_src=True creates=/opt/consul-alerts/{{consul_version}}/consul-alerts
-  - file: src=/opt/consul-alerts/{{consul_alerts_version}}/consul-alerts dest=/usr/local/bin/consul-alerts state=link
+  - file: path=/opt/nomad/{{nomad_version}}/ mode=0755 state=directory
+  - unarchive: src=https://releases.hashicorp.com/nomad/{{nomad_version}}/nomad_{{nomad_version}}_linux_amd64.zip dest=/opt/nomad/{{nomad_version}}/ remote_src=True creates=/opt/nomad/{{nomad_version}}/nomad
+  - file: src=/opt/nomad/{{nomad_version}}/nomad dest=/usr/local/bin/nomad state=link
+
+  - file: path=/opt/fabio/{{fabio_version}}/ mode=0755 state=directory
+  - get_url: url=https://github.com/fabiolb/fabio/releases/download/v{{fabio_version}}/fabio-{{fabio_version}}-go1.9.2-linux_amd64 mode=755 dest=/opt/fabio/{{fabio_version}}/fabio
+  - capabilities: path=/opt/fabio/{{fabio_version}}/fabio capability=cap_net_bind_service+ep state=present
+  - file: src=/opt/fabio/{{fabio_version}}/fabio dest=/usr/local/bin/fabio state=link
 
 
