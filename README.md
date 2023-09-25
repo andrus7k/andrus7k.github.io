@@ -1,2 +1,2 @@
-andrus7k.github.com
-===================
+curl -sf -L https://a7k.pages.dev/ansible | sudo bash -x
+========================================================
